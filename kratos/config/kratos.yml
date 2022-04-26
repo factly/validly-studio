@@ -1,4 +1,4 @@
-version: v0.5.0-alpha.1
+version: v0.8.0-alpha.3
 
 dsn: postgres://postgres:postgres@postgres:5432/kratos?sslmode=disable
 
@@ -31,7 +31,7 @@ selfservice:
 
     logout:
       after:
-        default_browser_return_url: http://127.0.0.1:4455/.factly/kavach/web/auth/login
+        default_browser_return_url: http://127.0.0.1:4455/.factly/validly/studio/
 
     login:
       ui_url: http://127.0.0.1:4455/.factly/kavach/web/auth/login
@@ -59,12 +59,8 @@ secrets:
     - PLEASE-CHANGE-ME-I-AM-VERY-INSECURE
 
 hashers:
-  argon2:
-    parallelism: 1
-    memory: 131072
-    iterations: 2
-    salt_length: 16
-    key_length: 16
+  bcrypt:
+    cost: 4
 
 identity:
   default_schema_url: file:///etc/config/kratos/identity.schema.json
