@@ -12,7 +12,9 @@ const { Sider } = Layout;
 function Sidebar() {
   const navTheme = proSettings.navTheme;
   const dispatch = useDispatch();
-  const { collapsed } = useSelector((state) => state.sidebar);
+  const {files} = useSelector((state) => 
+  { return state.validly} )
+  const { collapsed } = useSelector((state) => state.sidebar.sider);
   const onCollapse = (collapsed) => {
     collapsed ? dispatch(setCollapse(true)) : dispatch(setCollapse(false));
   };
@@ -41,7 +43,7 @@ function Sidebar() {
         height: '100vh',
       }}
     >
-      <Link to="/">
+    
         <div
           style={{
             display: 'flex',
@@ -49,8 +51,8 @@ function Sidebar() {
             justifyContent: 'center',
           }}
         >
-          <img alt="logo" hidden={!collapsed} src={require('../../assets/antd-icon.svg')} />
-          <div></div>
+          {/* <img alt="logo" hidden={!collapsed} src={require('../../assets/antd-icon.svg')} /> */}
+          {/* <div></div> */}
           {/* <img
             alt="logo"
             hidden={collapsed}
@@ -59,15 +61,20 @@ function Sidebar() {
           /> */}
           <h1>Validly</h1>
         </div>
-      </Link>
+    
       <Menu
         theme={navTheme}
         mode="inline"
         className="slider-menu"
         style={{ background: '#f0f2f5' }}
+        defaultSelectedKeys={['0']}
       >
         {routes
-          .filter((each) => each.enableNavigation === true)
+          .filter((each) =>{ 
+            if(each.title==="Metafacts"){
+              return each.enableNavigation === true && (files.length!==0)
+            }
+           return each.enableNavigation === true } )
           .map((route, index) => {
             const { Icon } = route;
             return (

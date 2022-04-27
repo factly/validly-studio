@@ -1,15 +1,35 @@
-import { HomeOutlined } from '@ant-design/icons';
+import {FileDoneOutlined , TableOutlined } from '@ant-design/icons';
 
 //Pages
 import Home from '../pages/home';
-
+import Validly from '../pages/validly';
+import Metafacts from '../pages/metafacts';
 export default [
   {
-    path: '/home',
-    Component: Home,
+    path: '/',
+    Component: Validly,
+    title: 'Validly',
+  },
+  {
+    path: '/.factly/validly/studio/',
+    Component: Validly,
+    title: 'Validly',
+  },
+  {
+    path: '/expectation/datasets/',
+    Component: Validly,
     enableNavigation: true,
     enableBreadcrumb: true,
-    Icon: HomeOutlined,
-    title: 'Home',
+    Icon: FileDoneOutlined ,
+    title: 'Validly',
   },
+  {
+    path: '/meta-data/datasets/',
+    Component: Metafacts ,
+    enableNavigation: true,
+    enableBreadcrumb: true,
+    Icon:  TableOutlined,
+    title: 'Metafacts',
+  },
+
 ];
