@@ -21,3 +21,9 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Env folders
+*.env
+
+# S3 minio
+volumes
