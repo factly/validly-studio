@@ -14,8 +14,6 @@ function Sidebar() {
   const dispatch = useDispatch();
   const { collapsed } = useSelector((state) => state.sidebar);
   const onCollapse = (collapsed) => {
-    console.log({ collapsed });
-
     collapsed ? dispatch(setCollapse(true)) : dispatch(setCollapse(false));
   };
 

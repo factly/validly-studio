@@ -1,0 +1,192 @@
+version: "1.0.0"
+
+services:
+  ########################################################################################################
+  ########################################  DATABASE SERVICES ############################################
+  ########################################################################################################
+  postgres:
+    image: postgres:11.7-alpine
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./pg-init-scripts:/docker-entrypoint-initdb.d
+      - ~/factly/validly/postgresql:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_MULTIPLE_DATABASES=kratos,keto,kavach
+    networks:
+      - validly
+
+  ########################################################################################################
+  ############################################ IMAGE PROXY ###############################################
+  ########################################################################################################
+  imgproxy:
+    image: darthsim/imgproxy:v2.15.0
+    ports:
+      - 8080:8080
+    environment:
+      - IMGPROXY_BASE_URL=http://minio:9000/
+      - IMGPROXY_TTL=31536000
+    networks:
+      - validly
+
+
+  ########################################################################################################
+  ######################### ORY SERVICES - KRATOS, KETO AND OATHKEEPER ###################################
+  ########################################################################################################
+  kratos-migrate:
+    depends_on:
+      - postgres
+    image: oryd/kratos:v0.8.0-alpha.3
+    environment:
+      - DSN=postgres://postgres:postgres@postgres:5432/kratos?sslmode=disable
+    volumes:
+      - type: bind
+        source: ./kratos/config
+        target: /etc/config/kratos
+    command: -c /etc/config/kratos/kratos.yml migrate sql -e --yes
+    restart: on-failure
+    networks:
+      - validly
+
+  keto-migrate:
+    image: oryd/keto:v0.5.7
+    environment:
+      - LOG_LEVEL=debug
+    depends_on:
+      - postgres
+    command: migrate sql postgres://postgres:postgres@postgres:5432/keto?sslmode=disable
+    restart: on-failure
+    networks:
+      - validly
+
+  keto:
+    image: oryd/keto:v0.5.7
+    ports:
+      - "4466:4466"
+    depends_on:
+      - keto-migrate
+    environment:
+      - DSN=postgres://postgres:postgres@postgres:5432/keto?sslmode=disable
+    networks:
+      - validly
+
+  kratos:
+    depends_on:
+      - kratos-migrate
+    image: oryd/kratos:v0.8.0-alpha.3
+    ports:
+      - "4433:4433" # public
+      - "4434:4434" # admin
+    environment:
+      - DSN=postgres://postgres:postgres@postgres:5432/kratos?sslmode=disable
+    volumes:
+      - type: bind
+        source: ./kratos/config
+        target: /etc/config/kratos
+    command: serve -c /etc/config/kratos/kratos.yml --dev
+    restart: unless-stopped
+    networks:
+      - validly
+
+  oathkeeper:
+    image: oryd/oathkeeper:latest-alpine
+    depends_on:
+      - kratos
+    ports:
+      - "4455:4455"
+      - "4456:4456"
+    environment:
+      - LOG_LEVEL=debug
+    volumes:
+      - type: bind
+        source: ./oathkeeper
+        target: /etc/config/oathkeeper
+    command: serve proxy -c "/etc/config/oathkeeper/.oathkeeper.yml"
+    restart: on-failure
+    networks:
+      - validly
+
+
+  ########################################################################################################
+  ############################################  KAVACH ###################################################
+  ########################################################################################################
+  kavach-server:
+    depends_on:
+      - postgres
+      - keto
+      - kratos
+      - kavach-migrate
+    ports:
+      - 5001:8000
+    image: factly/kavach-server:0.8.0
+    environment:
+      - WAIT_HOSTS=postgres:5432, kratos:4434 , keto:4466
+      - KAVACH_DATABASE_HOST=postgres 
+      - KAVACH_DATABASE_USER=postgres
+      - KAVACH_DATABASE_PASSWORD=postgres
+      - KAVACH_DATABASE_NAME=kavach 
+      - KAVACH_DATABASE_PORT=5432 
+      - KAVACH_DATABASE_SSL_MODE=disable
+      - KAVACH_KETO_URL=http://keto:4466
+      - KAVACH_KRATOS_ADMIN_URL=http://kratos:4434
+      - KAVACH_MODE=development
+      - KAVACH_IMAGEPROXY_URL=http://127.0.0.1:7001
+    restart: unless-stopped
+    networks:
+      - validly
+  
+  kavach-migrate:
+    depends_on:
+      - postgres
+      - keto
+      - kratos
+    image: factly/kavach-server
+    environment:
+      - WAIT_HOSTS=postgres:5432, kratos:4434 , keto:4466
+      - KAVACH_DATABASE_HOST=postgres 
+      - KAVACH_DATABASE_USER=postgres
+      - KAVACH_DATABASE_PASSWORD=postgres
+      - KAVACH_DATABASE_NAME=kavach 
+      - KAVACH_DATABASE_PORT=5432 
+      - KAVACH_DATABASE_SSL_MODE=disable
+      - KAVACH_KETO_URL=http://keto:4466
+      - KAVACH_KRATOS_ADMIN_URL=http://kratos:4434
+      - KAVACH_MODE=development
+      - KAVACH_IMAGEPROXY_URL=http://127.0.0.1:7001
+    entrypoint: /app/kavach-server migrate
+    networks:
+      - validly
+
+  kavach-web:
+    image: factly/kavach-web:dev
+    environment:
+      - PUBLIC_URL=http://127.0.0.1:4455/.factly/kavach/web
+    restart: unless-stopped
+    networks:
+      - validly
+
+
+  ########################################################################################################
+  #######################################  VALIDLY-STUDIO ################################################
+  ########################################################################################################
+  validly-studio:
+    build: 
+      context: ./studio
+      dockerfile: Dockerfile
+    environment:
+      - PUBLIC_URL=http://127.0.0.1:4455/.factly/validly/studio
+      - REACT_APP_KAVACH_PUBLIC_URL=http://127.0.0.1:4455/.factly/kavach/web
+      - REACT_APP_KRATOS_PUBLIC_URL=http://127.0.0.1:4455/.ory/kratos/public
+    volumes:
+      - type: bind
+        source: ./studio
+        target: /app
+      - /app/node_modules
+    restart: unless-stopped
+    networks:
+      - validly
+
+networks:
+  validly:
