@@ -11,7 +11,7 @@ function Metafacts() {
     {
       title: 'formats_available',
       dataIndex: 'formats_available',
-      key: 'formats available',
+      key: 'formats_available',
     },
     {
       title: 'granularity',
@@ -21,8 +21,7 @@ function Metafacts() {
     {
       title: 'is_public',
       dataIndex: 'is_public',
-      key: 'is_public',
-      render:(is_public)=>is_public==='True'?'Yes':'No'
+      key: 'is_public'
     },
     {
         title: 'output_file_name',
@@ -84,7 +83,7 @@ const  headers = [
    hideOnSinglePage:true,
  }}
  scroll={{ x: 768}}
- columns={columnsDynamic}
+ columns={columns}
 dataSource={Object.values(metaTabledata).map((value,index)=>{return {...value,is_public:value['is_public']?"True":"False"}})}
  bordered   
  rowKey={(record)=>record.output_file_name}
