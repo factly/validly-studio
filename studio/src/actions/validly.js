@@ -12,7 +12,7 @@ export const getValidationData = (files)=>{
     dispatch(setLoading(true))
    let data = new FormData()
   files.map((file)=> data.append('datasets',file))
-  data.append("result_type" , "SUMMARY")
+  data.append("result_type" , "COMPLETE")
  fetch('http://localhost:8000/expectation/datasets/?format=json', {
     method: 'POST',
     body: data
@@ -36,7 +36,7 @@ export const getValidationData = (files)=>{
  }
   )
    dispatch(setUploadButton(false))
-   dispatch(addExpectationCard([]))
+   dispatch(addExpectationCard(new Array(files.length).fill(null)))
    dispatch(addValidationData(validationDataArray))
 })
 .finally(()=>dispatch(setLoading(false)))}

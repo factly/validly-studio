@@ -76,6 +76,11 @@ const  headers = [
   },[datasets])
     return (
  <>   
+ <Button  style={{marginBottom:'10px', float:'right'}} type="primary" >
+  <CSVLink headers={headers} filename={"metafacts.csv"} data={Object.values(metaTabledata).map((value,index)=>{return {...value,is_public:value['is_public']?"True":"False"}})} > 
+  {<DownloadOutlined style={{paddingRight:'5px'}}/>} Download CSV 
+  </CSVLink>
+</Button>
   <Table  
  loading={loading}
  pagination={{
@@ -88,11 +93,6 @@ dataSource={Object.values(metaTabledata).map((value,index)=>{return {...value,is
  bordered   
  rowKey={(record)=>record.output_file_name}
  />
-<Button  style={{marginTop:'15px', float:'right'}} type="primary" >
-  <CSVLink headers={headers} filename={"metafacts.csv"} data={Object.values(metaTabledata).map((value,index)=>{return {...value,is_public:value['is_public']?"True":"False"}})} > 
-  {<DownloadOutlined style={{paddingRight:'5px'}}/>} Download CSV 
-  </CSVLink>
-</Button>
     </>
     );
 }
