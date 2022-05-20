@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link , useLocation } from 'react-router-dom';
 import { Layout, Button, Menu } from 'antd';
 import routes from '../../config/routes';
 import { setCollapse } from './../../actions/sidebar';
@@ -12,7 +12,19 @@ const { Sider } = Layout;
 function Sidebar() {
   const navTheme = proSettings.navTheme;
   const dispatch = useDispatch();
-  const { collapsed } = useSelector((state) => state.sidebar);
+  const location = useLocation();
+  const pathSnippets = location.pathname.split('/').filter((i) => i);
+  const selectedmenu = ()=>{
+    if([".factly","expectation"].includes(pathSnippets[0])||pathSnippets.length===0){
+      return ['0']
+    }
+    if(["meta-data"].includes(pathSnippets[0])){
+      return ['1']
+    }
+  }
+  const {files} = useSelector((state) => 
+  { return state.validly} )
+  const { collapsed } = useSelector((state) => state.sidebar.sider);
   const onCollapse = (collapsed) => {
     collapsed ? dispatch(setCollapse(true)) : dispatch(setCollapse(false));
   };
@@ -41,7 +53,7 @@ function Sidebar() {
         height: '100vh',
       }}
     >
-      <Link to="/">
+    
         <div
           style={{
             display: 'flex',
@@ -49,8 +61,8 @@ function Sidebar() {
             justifyContent: 'center',
           }}
         >
-          <img alt="logo" hidden={!collapsed} src={require('../../assets/antd-icon.svg')} />
-          <div></div>
+          {/* <img alt="logo" hidden={!collapsed} src={require('../../assets/antd-icon.svg')} /> */}
+          {/* <div></div> */}
           {/* <img
             alt="logo"
             hidden={collapsed}
@@ -59,15 +71,20 @@ function Sidebar() {
           /> */}
           <h1>Validly</h1>
         </div>
-      </Link>
+    
       <Menu
         theme={navTheme}
         mode="inline"
         className="slider-menu"
         style={{ background: '#f0f2f5' }}
+        selectedKeys={selectedmenu()}
       >
         {routes
-          .filter((each) => each.enableNavigation === true)
+          .filter((each) =>{ 
+            if(each.title==="Metafacts"){
+              return each.enableNavigation === true && (files.length!==0)
+            }
+           return each.enableNavigation === true } )
           .map((route, index) => {
             const { Icon } = route;
             return (

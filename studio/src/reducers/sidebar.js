@@ -1,5 +1,6 @@
 import layout from '../config/layout';
-import { TOGGLE_SIDER } from '../constants/settings';
+import { SET_COLLAPSE } from '../constants/sidebar';
+
 
 const initialState = {
   ...layout,
@@ -10,7 +11,7 @@ const initialState = {
 
 export default function settingsReducer(state = initialState, action = {}) {
   switch (action.type) {
-    case TOGGLE_SIDER:
+    case SET_COLLAPSE:
       return {
         ...state,
         ...{

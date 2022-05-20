@@ -1,4 +1,4 @@
-version: "1.0.0"
+version: "3.7"
 
 services:
   ########################################################################################################
@@ -233,7 +233,7 @@ services:
       - minio
     ports:
       - 8000:8000
-    image: factly/validly-server:0.0.1-dev
+    image: factly/validly-server:0.1.3 
     command: >
       /bin/sh -c "
       uvicorn app.main:app --reload --host 0.0.0.0;
@@ -249,7 +249,7 @@ services:
   metafacts-server:
     ports:
       - 8005:8005
-    image: factly/metafacts-server:0.0.1-dev
+    image: factly/metafacts-server:latest
     command: >
       /bin/sh -c "
       uvicorn app.main:app --reload --host 0.0.0.0 --port 8005;
