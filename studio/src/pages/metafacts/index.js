@@ -1,12 +1,16 @@
-import { Button, Table } from "antd";
+import { Button, Modal, Table, Typography } from "antd";
 import { DownloadOutlined } from '@ant-design/icons';
 import React from "react";
 import { useSelector } from "react-redux";
  import {CSVLink} from "react-csv"
+import { useHistory } from "react-router-dom";
 function Metafacts() {
  const[metaTabledata,setMetaTabledata ] = React.useState({})
  const[loading,setLoading ] = React.useState(true)
+ const history=useHistory()
  const datasets = useSelector((state) => state.validly.files )
+ const filesValidity = useSelector((state) => state.validly.uploadedFilesValidity)
+ const [show, setShow] = React.useState(!filesValidity);
  const columns = [
     {
       title: 'formats_available',
@@ -81,6 +85,9 @@ const  headers = [
   {<DownloadOutlined style={{paddingRight:'5px'}}/>} Download CSV 
   </CSVLink>
 </Button>
+  <Modal visible={show} onOk={()=>setShow(false)}  title="Warning" onCancel={()=>history.push("/")}>
+    <Typography.Text type="waring"> You have errors in your Datasets would you still like to proceed </Typography.Text>
+  </Modal>
   <Table  
  loading={loading}
  pagination={{

@@ -1,6 +1,6 @@
 
 import { ADD_FILES, RESET_PANEL_FLAG, SET_LOADING } from "../constants/validly";
-import { ADD_VALIDATIONS } from "../constants/validly";
+import { ADD_VALIDATIONS , UPLOADED_FILES_VALIDITY } from "../constants/validly";
 import { ADD_EXPECTATIONS } from "../constants/validly";
 import { SET_UPLOAD_BUTTON } from "../constants/validly";
 export const addFiles = (data) => ({
@@ -13,7 +13,7 @@ export const getValidationData = (files)=>{
    let data = new FormData()
   files.map((file)=> data.append('datasets',file))
   data.append("result_type" , "COMPLETE")
- fetch('http://localhost:8000/expectation/datasets/?format=json', {
+ fetch(window.REACT_APP_VALIDLY_SERVER_URL, {
     method: 'POST',
     body: data
   })
@@ -35,6 +35,8 @@ export const getValidationData = (files)=>{
  validationDataArray.push({filename:filename,is_datacompletely_valid:is_data_completely_valid,expectations_Validated_List:expectationsValidatedList })
  }
   )
+  const areUploadedfilesCompletelyValid = validationDataArray.reduce(( totalBool , currentFile) => currentFile.is_datacompletely_valid && totalBool  , true )
+   dispatch(setFilesValidity(areUploadedfilesCompletelyValid ))
    dispatch(setUploadButton(false))
    dispatch(addExpectationCard(new Array(files.length).fill(null)))
    dispatch(addValidationData(validationDataArray))
@@ -43,6 +45,11 @@ export const getValidationData = (files)=>{
 }
   export const addValidationData = (data) => ({
     type:ADD_VALIDATIONS,
+    payload: data,
+  }); 
+  
+  export const setFilesValidity = (data) => ({
+    type:UPLOADED_FILES_VALIDITY,
     payload: data,
   }); 
 

@@ -11,12 +11,7 @@ export default [
     title: 'Validly',
   },
   {
-    path: '/.factly/validly/studio/',
-    Component: Validly,
-    title: 'Validly',
-  },
-  {
-    path: '/expectation/datasets/',
+    path: '/expectation/datasets',
     Component: Validly,
     enableNavigation: true,
     enableBreadcrumb: true,
@@ -24,7 +19,7 @@ export default [
     title: 'Validly',
   },
   {
-    path: '/meta-data/datasets/',
+    path: '/meta-data/datasets',
     Component: Metafacts ,
     enableNavigation: true,
     enableBreadcrumb: true,

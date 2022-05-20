@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link , useLocation } from 'react-router-dom';
 import { Layout, Button, Menu } from 'antd';
 import routes from '../../config/routes';
 import { setCollapse } from './../../actions/sidebar';
@@ -12,6 +12,20 @@ const { Sider } = Layout;
 function Sidebar() {
   const navTheme = proSettings.navTheme;
   const dispatch = useDispatch();
+  const location = useLocation();
+  console.log(location.pathname)
+  const pathSnippets = location.pathname.split('/').filter((i) => i);
+  //const[refresh,setRefresh ] = React.useState(true)
+  const selectedmenu = ()=>{
+    if([".factly","expectation"].includes(pathSnippets[0])||pathSnippets.length===0){
+      return ['0']
+    }
+    if(["meta-data"].includes(pathSnippets[0])){
+      return ['1']
+    }
+  }
+  console.log(pathSnippets,"pathSnippets")
+//  React.useEffect(()=>setRefresh((prev)=>!prev), [])
   const {files} = useSelector((state) => 
   { return state.validly} )
   const { collapsed } = useSelector((state) => state.sidebar.sider);
@@ -67,8 +81,9 @@ function Sidebar() {
         mode="inline"
         className="slider-menu"
         style={{ background: '#f0f2f5' }}
-        defaultSelectedKeys={['0']}
+        selectedKeys={selectedmenu()}
       >
+        {console.log([selectedmenu()] , "[selectedmenu()]")}
         {routes
           .filter((each) =>{ 
             if(each.title==="Metafacts"){

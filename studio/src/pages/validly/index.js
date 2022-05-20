@@ -36,7 +36,7 @@ function Validly() {
     type='primary'> Start Upload </Button>
    </Space>
    {loading?<Spin size="default" style={{display:'block',marginTop:'15%'}} />:validations.map(( file , index )=><Collapse 
-   style={file.is_datacompletely_valid?{backgroundColor:"#effaf5",margin:"12px"}:{backgroundColor:"#feecf0",margin:"12px"}} expandIcon={(props) =>customExpandIcon(props)} expandIconPosition="right" defaultActiveKey={null}  >
+   style={file.is_datacompletely_valid?{backgroundColor:"#effaf5",margin:"12px 12px 12px 0px"}:{backgroundColor:"#feecf0",margin:"12px 12px 12px 0px"}} expandIcon={(props) =>customExpandIcon(props)} expandIconPosition="right" defaultActiveKey={null}  >
    <Panel  header={<b>{file.filename.split("/").pop().split(".")[0]}</b>}  key={index+file.filename} >
        <Row gutter={16}>  
           <Col span={8}>

@@ -34,7 +34,7 @@ const AccountMenu = () => {
   };
   return (
     <Menu mode="horizontal">
-      <Menu.SubMenu key="submenu" title={<UserOutlined />}>
+      <Menu.SubMenu key="submenu" title={<UserOutlined style={{fontSize:"125%"}}/>}>
         <Menu.Item key="password">
           <Link to="#">
             <SafetyCertificateOutlined /> Security
