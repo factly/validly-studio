@@ -70,7 +70,7 @@ const  headers = [
     if(datasets.length){
         let data = new FormData()
         datasets.map((file)=> data.append('csv_files',file))
-         fetch('http://localhost:8005/meta-data/files',{
+         fetch(window.REACT_APP_METAFACTS_SERVER_URL,{
             method: 'POST',
             body: data
          }).then(response => response.json())

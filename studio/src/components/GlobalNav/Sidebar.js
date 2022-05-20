@@ -13,9 +13,7 @@ function Sidebar() {
   const navTheme = proSettings.navTheme;
   const dispatch = useDispatch();
   const location = useLocation();
-  console.log(location.pathname)
   const pathSnippets = location.pathname.split('/').filter((i) => i);
-  //const[refresh,setRefresh ] = React.useState(true)
   const selectedmenu = ()=>{
     if([".factly","expectation"].includes(pathSnippets[0])||pathSnippets.length===0){
       return ['0']
@@ -24,8 +22,6 @@ function Sidebar() {
       return ['1']
     }
   }
-  console.log(pathSnippets,"pathSnippets")
-//  React.useEffect(()=>setRefresh((prev)=>!prev), [])
   const {files} = useSelector((state) => 
   { return state.validly} )
   const { collapsed } = useSelector((state) => state.sidebar.sider);
@@ -83,7 +79,6 @@ function Sidebar() {
         style={{ background: '#f0f2f5' }}
         selectedKeys={selectedmenu()}
       >
-        {console.log([selectedmenu()] , "[selectedmenu()]")}
         {routes
           .filter((each) =>{ 
             if(each.title==="Metafacts"){

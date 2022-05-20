@@ -72,7 +72,6 @@ const unexpectedList = getUnexpected_list()
     </Link> }
 </p> 
 <p> <Card style={{backgroundColor:"#feecf0"}}>{getExpectationErrorMessage()}
-{/* <Link  href={getCleaningPdfLink()} target="_blank" rel="noopener noreferrer"><InfoCircleFilled style={{fontSize:"125%"}}/></Link>  */}
 <Button style={{paddingLeft:"10px"}} target="_blank" href={getCleaningPdfLink()} rel="noopener noreferrer" type="link"> Know more </Button>
 </Card> 
 </p>
