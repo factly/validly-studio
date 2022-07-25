@@ -179,6 +179,8 @@ services:
       - PUBLIC_URL=http://127.0.0.1:4455/.factly/validly/studio
       - REACT_APP_KAVACH_PUBLIC_URL=http://127.0.0.1:4455/.factly/kavach/web
       - REACT_APP_KRATOS_PUBLIC_URL=http://127.0.0.1:4455/.ory/kratos/public
+      - REACT_APP_VALIDLY_SERVER_URL="http://localhost:8000/expectation/datasets/?format=json"
+      - REACT_APP_METAFACTS_SERVER_URL="http://localhost:8005/meta-data/files
     volumes:
       - type: bind
         source: ./studio
