@@ -13,7 +13,7 @@ export const getValidationData = (files)=>{
    let data = new FormData()
   files.map((file)=> data.append('datasets',file))
   data.append("result_type" , "COMPLETE")
- fetch(window.REACT_APP_VALIDLY_SERVER_URL, {
+ fetch(process.env.REACT_APP_VALIDLY_SERVER_URL+'/expectation/datasets/?format=json', {
     method: 'POST',
     body: data
   })

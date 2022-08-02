@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 
 const AccountMenu = () => {
   const handleLogout = () => {
-    fetch(process.env.REACT_APP_KRATOS_PUBLIC_URL + '/self-service/logout/browser', {
+    fetch(window.REACT_APP_KRATOS_PUBLIC_URL + '/self-service/logout/browser', {
       credentials: 'include',
     })
       .then((res) => {
