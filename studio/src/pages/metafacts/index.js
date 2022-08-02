@@ -4,6 +4,7 @@ import React from "react";
 import { useSelector } from "react-redux";
  import {CSVLink} from "react-csv"
 import { useHistory } from "react-router-dom";
+import { Helmet } from 'react-helmet';
 function Metafacts() {
  const[metaTabledata,setMetaTabledata ] = React.useState({})
  const[loading,setLoading ] = React.useState(true)
@@ -79,7 +80,8 @@ const  headers = [
         }
   },[datasets])
     return (
- <>   
+ <>  
+  <Helmet title={'Metafacts'} />
  <Button  style={{marginBottom:'10px', float:'right'}} type="primary" >
   <CSVLink headers={headers} filename={"metafacts.csv"} data={Object.values(metaTabledata).map((value,index)=>{return {...value,is_public:value['is_public']?"True":"False"}})} > 
   {<DownloadOutlined style={{paddingRight:'5px'}}/>} Download CSV 

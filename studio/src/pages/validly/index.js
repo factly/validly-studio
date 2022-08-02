@@ -5,6 +5,7 @@ import 'antd/dist/antd.css';
 import { Upload,Button , Collapse , Card , Row, Col,Spin} from 'antd';
 import customExpandIcon from '../../components/customexpandicon';
 import ExpectationCard from '../../components/expectationcard';
+import { Helmet } from 'react-helmet';
 import { Space } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 const { Panel } = Collapse;
@@ -16,6 +17,7 @@ function Validly() {
  }
  return(
    <div className="App">
+   <Helmet title={'Homepage'} />
    <Space size={"small"}>
     <Upload 
      showUploadList={false}
