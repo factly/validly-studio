@@ -40,11 +40,6 @@ const AccountMenu = () => {
             <SafetyCertificateOutlined /> Security
           </Link>
         </Menu.Item>
-        <Menu.Item key="profile">
-          <Link to="#">
-            <EditOutlined /> Profile
-          </Link>
-        </Menu.Item>
         <Menu.Item key="logout" onClick={handleLogout}>
           <LogoutOutlined />
           Logout
