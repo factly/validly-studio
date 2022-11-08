@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link , useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Layout, Button, Menu } from 'antd';
 import routes from '../../config/routes';
 import { setCollapse } from './../../actions/sidebar';
@@ -14,16 +14,21 @@ function Sidebar() {
   const dispatch = useDispatch();
   const location = useLocation();
   const pathSnippets = location.pathname.split('/').filter((i) => i);
-  const selectedmenu = ()=>{
-    if([".factly","expectation"].includes(pathSnippets[0])||pathSnippets.length===0){
-      return ['0']
+  const { files } = useSelector((state) => {
+    return state.validly;
+  });
+  const selectedmenu = () => {
+    if (['.factly', 'expectation'].includes(pathSnippets[0]) || pathSnippets.length === 0) {
+      return ['0'];
     }
-    if(["meta-data"].includes(pathSnippets[0])){
-      return ['1']
+    if (['meta-data'].includes(pathSnippets[0])) {
+      return ['1'];
     }
-  }
-  const {files} = useSelector((state) => 
-  { return state.validly} )
+    if (['docs'].includes(pathSnippets[0])) {
+      if (files.length !== 0) return ['2'];
+      return ['1'];
+    }
+  };
   const { collapsed } = useSelector((state) => state.sidebar.sider);
   const onCollapse = (collapsed) => {
     collapsed ? dispatch(setCollapse(true)) : dispatch(setCollapse(false));
@@ -53,25 +58,24 @@ function Sidebar() {
         height: '100vh',
       }}
     >
-    
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          {/* <img alt="logo" hidden={!collapsed} src={require('../../assets/antd-icon.svg')} /> */}
-          {/* <div></div> */}
-          {/* <img
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        {/* <img alt="logo" hidden={!collapsed} src={require('../../assets/antd-icon.svg')} /> */}
+        {/* <div></div> */}
+        {/* <img
             alt="logo"
             hidden={collapsed}
             src={require('../../assets/antd-icon.svg')}
             style={{ width: '32px' }}
           /> */}
-          <h1>Validly</h1>
-        </div>
-    
+        <h1>Validly</h1>
+      </div>
+
       <Menu
         theme={navTheme}
         mode="inline"
@@ -80,11 +84,12 @@ function Sidebar() {
         selectedKeys={selectedmenu()}
       >
         {routes
-          .filter((each) =>{ 
-            if(each.title==="Metafacts"){
-              return each.enableNavigation === true && (files.length!==0)
+          .filter((each) => {
+            if (each.title === 'Metafacts') {
+              return each.enableNavigation === true && files.length !== 0;
             }
-           return each.enableNavigation === true } )
+            return each.enableNavigation === true;
+          })
           .map((route, index) => {
             const { Icon } = route;
             return (
