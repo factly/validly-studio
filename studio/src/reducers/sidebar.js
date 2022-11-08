@@ -1,7 +1,6 @@
 import layout from '../config/layout';
 import { SET_COLLAPSE } from '../constants/sidebar';
 
-
 const initialState = {
   ...layout,
   sider: {

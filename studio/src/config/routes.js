@@ -1,9 +1,10 @@
-import {FileDoneOutlined , TableOutlined } from '@ant-design/icons';
+import { FileDoneOutlined, TableOutlined, ProfileOutlined } from '@ant-design/icons';
 
 //Pages
-import Home from '../pages/home';
+
 import Validly from '../pages/validly';
 import Metafacts from '../pages/metafacts';
+import Documentation from '../pages/docs';
 export default [
   {
     path: '/',
@@ -15,16 +16,23 @@ export default [
     Component: Validly,
     enableNavigation: true,
     enableBreadcrumb: true,
-    Icon: FileDoneOutlined ,
+    Icon: FileDoneOutlined,
     title: 'Validly',
   },
   {
     path: '/meta-data/datasets',
-    Component: Metafacts ,
+    Component: Metafacts,
     enableNavigation: true,
     enableBreadcrumb: true,
-    Icon:  TableOutlined,
+    Icon: TableOutlined,
     title: 'Metafacts',
   },
-
+  {
+    path: '/docs',
+    Component: Documentation,
+    enableNavigation: true,
+    enableBreadcrumb: true,
+    Icon: ProfileOutlined,
+    title: 'Documentation',
+  },
 ];

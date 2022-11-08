@@ -1,12 +1,12 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Link, Route} from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Link, Route } from 'react-router-dom';
 import routes from './config/routes';
 import 'antd/dist/antd.css';
 import BasicLayout from './layout/basic';
 function App() {
   return (
     <div className="App">
-      <Router  basename={process.env.PUBLIC_URL}>
+      <Router basename={process.env.PUBLIC_URL}>
         <Switch>
           {/* <Route path="/auth/login" component={(props) => <Auth {...props} flow={'login'} />} />
           <Route

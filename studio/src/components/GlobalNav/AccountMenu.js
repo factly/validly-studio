@@ -5,7 +5,6 @@ import {
   UserOutlined,
   SafetyCertificateOutlined,
   EditOutlined,
- 
 } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 
@@ -34,7 +33,7 @@ const AccountMenu = () => {
   };
   return (
     <Menu mode="horizontal">
-      <Menu.SubMenu key="submenu" title={<UserOutlined style={{fontSize:"125%"}}/>}>
+      <Menu.SubMenu key="submenu" title={<UserOutlined style={{ fontSize: '125%' }} />}>
         <Menu.Item key="password">
           <Link to="#">
             <SafetyCertificateOutlined /> Security
