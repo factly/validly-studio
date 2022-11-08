@@ -33,7 +33,7 @@ const Documentation = () => {
                   }}
                   key={index}
                 >
-                  {expectationTitle}
+                  {expectationTitle.replaceAll("_"," ")}
                 </Menu.Item>
               ))}
             </Menu>
