@@ -1,16 +1,28 @@
-import { Button, Modal, Table, Typography } from 'antd';
-import { DownloadOutlined } from '@ant-design/icons';
+import { Button, Modal, Table, Typography, Space, Upload } from 'antd';
+import { DownloadOutlined, UploadOutlined } from '@ant-design/icons';
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { CSVLink } from 'react-csv';
 import { useHistory } from 'react-router-dom';
+import { addFiles, getMetaTableData, setUploadButton } from '../../actions/metafacts';
+import S3metafactsForm from '../../components/s3metafacts';
 function Metafacts() {
-  const [metaTabledata, setMetaTabledata] = React.useState({});
-  const [loading, setLoading] = React.useState(true);
+  const dispatch = useDispatch();
   const history = useHistory();
-  const datasets = useSelector((state) => state.validly.files);
+  const validlyDatasets = useSelector((state) => state.validly.files);
+  const {
+    files: metafactsDatasets,
+    loading,
+    metaTableData,
+    uploadButton,
+  } = useSelector((state) => state.metafacts);
   const filesValidity = useSelector((state) => state.validly.uploadedFilesValidity);
   const [show, setShow] = React.useState(!filesValidity);
+  const showTable = Object.keys(metaTableData).length !== 0 ? true : false;
+  // validlyDatasets.length ? true : Object.keys(metaTableData).length !== 0 ? true : false;
+  const customRequest = () => {
+    dispatch(getMetaTableData(metafactsDatasets));
+  };
   const columns = [
     {
       title: 'formats_available',
@@ -48,16 +60,16 @@ function Metafacts() {
       key: 'units',
     },
   ];
-  const columnsDynamic = Object.entries(metaTabledata).map((filenameValuePair, index) => {
-    const columns = Object.entries(filenameValuePair[1]).map((columnValuePair, index) => {
-      return {
-        title: columnValuePair[0],
-        dataIndex: columnValuePair[0],
-        key: columnValuePair[0],
-      };
-    });
-    return columns;
-  })[0];
+  // const columnsDynamic = Object.entries(metaTabledata).map((filenameValuePair, index) => {
+  //   const columns = Object.entries(filenameValuePair[1]).map((columnValuePair, index) => {
+  //     return {
+  //       title: columnValuePair[0],
+  //       dataIndex: columnValuePair[0],
+  //       key: columnValuePair[0],
+  //     };
+  //   });
+  //   return columns;
+  // })[0];
   const headers = [
     { label: 'formats_available', key: 'formats_available' },
     { label: 'granularity', key: 'granularity' },
@@ -68,58 +80,85 @@ function Metafacts() {
     { label: 'units', key: 'units' },
   ];
   React.useEffect(() => {
-    if (datasets.length) {
-      let data = new FormData();
-      datasets.map((file) => data.append('csv_files', file));
-      fetch(window.REACT_APP_METAFACTS_SERVER_URL + '/meta-data/files', {
-        method: 'POST',
-        body: data,
-      })
-        .then((response) => response.json())
-        .then((metaTabledata) => {
-          setMetaTabledata(metaTabledata);
-        })
-        .finally(() => setLoading(false));
+    if (
+      validlyDatasets.length &&
+      //  && Object.keys(metaTableData).length === 0
+      metafactsDatasets.length === 0
+    ) {
+      dispatch(getMetaTableData(validlyDatasets));
     }
-  }, [datasets]);
+  }, [validlyDatasets]);
   return (
     <>
-      <Button style={{ marginBottom: '10px', float: 'right' }} type="primary">
-        <CSVLink
-          headers={headers}
-          filename={'metafacts.csv'}
-          data={Object.values(metaTabledata).map((value, index) => {
+      <Space size={'small'}>
+        <Upload
+          showUploadList={false}
+          beforeUpload={(file, fileList) => {
+            dispatch(addFiles(fileList));
+            dispatch(setUploadButton(true));
+            return false;
+          }}
+          multiple
+        >
+          <Button icon={<UploadOutlined />}>Select Local Files</Button>
+          <Button>
+            {' '}
+            {metafactsDatasets.length !== 0 && uploadButton
+              ? `${metafactsDatasets.length} files selected`
+              : `No file Uploaded`}
+          </Button>
+        </Upload>
+        <Button onClick={customRequest} type="primary">
+          {' '}
+          Upload Local Files{' '}
+        </Button>
+        <S3metafactsForm style={{marginLeft:'75px'}}/>
+      </Space>
+      {showTable ? (
+        <Button style={{ marginBottom: '10px', float: 'right' }} type="primary">
+          <CSVLink
+            headers={headers}
+            filename={'metafacts.csv'}
+            data={Object.values(metaTableData).map((value, index) => {
+              return { ...value, is_public: value['is_public'] ? 'True' : 'False' };
+            })}
+          >
+            {<DownloadOutlined style={{ paddingRight: '5px' }} />} Download CSV
+          </CSVLink>
+        </Button>
+      ) : null}
+      {validlyDatasets.length &&
+      // ( Object.keys(metaTableData).length === 0 )
+      //  &&
+      metafactsDatasets.length === 0 ? (
+        <Modal
+          visible={show}
+          onOk={() => setShow(false)}
+          title="Warning"
+          onCancel={() => history.push('/')}
+        >
+          <Typography.Text type="error">
+            {' '}
+            You have errors in your validly Datasets would you still like to proceed{' '}
+          </Typography.Text>
+        </Modal>
+      ) : null}
+      {showTable ? (
+        <Table
+          loading={loading}
+          pagination={{
+            defaultPageSize: 100,
+            hideOnSinglePage: true,
+          }}
+          scroll={{ x: 768 }}
+          columns={columns}
+          dataSource={Object.values(metaTableData).map((value, index) => {
             return { ...value, is_public: value['is_public'] ? 'True' : 'False' };
           })}
-        >
-          {<DownloadOutlined style={{ paddingRight: '5px' }} />} Download CSV
-        </CSVLink>
-      </Button>
-      <Modal
-        visible={show}
-        onOk={() => setShow(false)}
-        title="Warning"
-        onCancel={() => history.push('/')}
-      >
-        <Typography.Text type="waring">
-          {' '}
-          You have errors in your Datasets would you still like to proceed{' '}
-        </Typography.Text>
-      </Modal>
-      <Table
-        loading={loading}
-        pagination={{
-          defaultPageSize: 100,
-          hideOnSinglePage: true,
-        }}
-        scroll={{ x: 768 }}
-        columns={columns}
-        dataSource={Object.values(metaTabledata).map((value, index) => {
-          return { ...value, is_public: value['is_public'] ? 'True' : 'False' };
-        })}
-        bordered
-        rowKey={(record) => record.output_file_name}
-      />
+          bordered
+          rowKey={(record) => record.output_file_name}
+        />
+      ) : null}
     </>
   );
 }

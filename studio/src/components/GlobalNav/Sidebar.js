@@ -25,8 +25,7 @@ function Sidebar() {
       return ['1'];
     }
     if (['docs'].includes(pathSnippets[0])) {
-      if (files.length !== 0) return ['2'];
-      return ['1'];
+      return ['2'];
     }
   };
   const { collapsed } = useSelector((state) => state.sidebar.sider);
@@ -85,9 +84,9 @@ function Sidebar() {
       >
         {routes
           .filter((each) => {
-            if (each.title === 'Metafacts') {
-              return each.enableNavigation === true && files.length !== 0;
-            }
+            // if (each.title === 'Metafacts') {
+            //   return each.enableNavigation === true && files.length !== 0;
+            // }
             return each.enableNavigation === true;
           })
           .map((route, index) => {
