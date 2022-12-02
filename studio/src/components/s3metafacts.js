@@ -2,15 +2,13 @@
 
 import React from 'react';
 import { useState } from 'react';
-import { Form, Button,Input, Modal} from 'antd';
+import { Form, Button, Input, Modal } from 'antd';
 import { useDispatch } from 'react-redux';
 import { getMetaTableDataFromS3 } from '../actions/metafacts';
 import { CloudUploadOutlined } from '@ant-design/icons';
 import { setFormErrors } from '../utils/form';
 
-
-
-function S3metafactsForm({style,...props}) {
+function S3metafactsForm({ style, ...props }) {
   const dispatch = useDispatch();
   const [form] = Form.useForm();
   const [showModal, setShowModal] = useState(false);
@@ -21,19 +19,18 @@ function S3metafactsForm({style,...props}) {
     setShowModal(true);
   };
   const onSave = (values) => {
-    dispatch(getMetaTableDataFromS3(values)).then(() => {
-      handleCancel();
-    }).catch((error)=>{
-    setFormErrors(error,form);
-    });
+    dispatch(getMetaTableDataFromS3(values))
+      .then(() => {
+        handleCancel();
+      })
+      .catch((error) => {
+        setFormErrors(error, form);
+      });
   };
   return (
     <>
-      <Button
-      style={style} 
-      icon={<CloudUploadOutlined />}
-      onClick={handleOpen}>
-       S3 Storage
+      <Button style={style} icon={<CloudUploadOutlined />} onClick={handleOpen}>
+        S3 Storage
       </Button>
       <Modal
         destroyOnClose
@@ -54,7 +51,7 @@ function S3metafactsForm({style,...props}) {
           onCancel={handleCancel}
           onFinish={(values) => onSave(values)}
         >
-          <Form.Item 
+          <Form.Item
             label="Bucket Name"
             name="s3_bucket"
             rules={[

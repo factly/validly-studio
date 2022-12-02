@@ -112,7 +112,7 @@ function Metafacts() {
           {' '}
           Upload Local Files{' '}
         </Button>
-        <S3metafactsForm style={{marginLeft:'75px'}}/>
+        <S3metafactsForm style={{ marginLeft: '75px' }} />
       </Space>
       {showTable ? (
         <Button style={{ marginBottom: '10px', float: 'right' }} type="primary">

@@ -6,19 +6,19 @@ export function getFormData(object) {
   return formData;
 }
 
-export function setFormErrors(error,form) {
-  if(error.status===400) {
-    switch(error.detail.Code){
+export function setFormErrors(error, form) {
+  if (error.status === 400) {
+    switch (error.detail.Code) {
       case 'NoSuchBucket':
-        form.setFields([{ name: 's3_bucket', errors: [error.detail.Message]}])
-        break
+        form.setFields([{ name: 's3_bucket', errors: [error.detail.Message] }]);
+        break;
       case 'NoSuchPrefix':
-        form.setFields([{ name: 'prefix', errors: [error.detail.Message]}])
-        break
-       default:
-        form.setFields([{ name: 's3_bucket', errors: [error.detail.Message]}])
+        form.setFields([{ name: 'prefix', errors: [error.detail.Message] }]);
+        break;
+      default:
+        form.setFields([{ name: 's3_bucket', errors: [error.detail.Message] }]);
     }
-    return
+    return;
   }
-  form.setFields([{ name: 's3_bucket', errors: ['Server error please try again']}])
+  form.setFields([{ name: 's3_bucket', errors: ['Server error please try again'] }]);
 }

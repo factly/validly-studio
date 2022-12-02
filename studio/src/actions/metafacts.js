@@ -50,12 +50,11 @@ export const getMetaTableDataFromS3 = (data) => {
       body: metafactsdata,
     })
       .then(parseJSON)
-      .then(({status,ok,json:metaTabledata}) => {
-        if(!ok)   throw {detail:metaTabledata.detail,status}
+      .then(({ status, ok, json: metaTabledata }) => {
+        if (!ok) throw { detail: metaTabledata.detail, status };
         dispatch(addMetaTableData(metaTabledata));
       })
       .finally(() => dispatch(setLoading(false)));
-     
   };
 };
 export const setLoading = (data) => ({
