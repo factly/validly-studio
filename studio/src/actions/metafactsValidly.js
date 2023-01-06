@@ -1,5 +1,6 @@
 import {
   ADD_METAFACTS_EXPECTATIONS,
+  ADD_METAFACTS_FILES,
   ADD_METAFACTS_VALIDATIONS,
   SET_METAFACTS_LOADING,
   SET_METAFACTS_UPLOAD_BUTTON,
@@ -24,7 +25,7 @@ export const getMetaFactsValidationData = (files) => {
           (file) => file.is_datacompletely_valid,
         );
         dispatch(setFilesValidity(areUploadedfilesCompletelyValid));
-        dispatch(setUploadButton(false));
+        dispatch(setMetaFactsUploadButton(false));
         dispatch(addMetaFactsExpectationCard(new Array(files.length).fill(null)));
         dispatch(addValidationData(validationDataArray));
       })
@@ -51,13 +52,17 @@ export const getGoogleSheetsValidations = (data) => {
           (file) => file.is_datacompletely_valid,
         );
         dispatch(setFilesValidity(areUploadedfilesCompletelyValid));
-        dispatch(setUploadButton(false));
+        dispatch(setMetaFactsUploadButton(false));
         dispatch(addMetaFactsExpectationCard(new Array(1).fill(null)));
         dispatch(addValidationData(validationDataArray));
       })
       .finally(() => dispatch(setLoading(false)));
   };
 };
+export const addMetaFactsFiles = (data) => ({
+  type: ADD_METAFACTS_FILES,
+  payload: data,
+});
 const addValidationData = (data) => ({
   type: ADD_METAFACTS_VALIDATIONS,
   payload: data,
@@ -72,7 +77,7 @@ export const addMetaFactsExpectationCard = (data) => ({
   payload: data,
 });
 
-const setUploadButton = (data) => ({
+export const setMetaFactsUploadButton = (data) => ({
   type: SET_METAFACTS_UPLOAD_BUTTON,
   payload: data,
 });

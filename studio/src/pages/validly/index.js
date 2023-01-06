@@ -15,7 +15,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import GoogleSheetsForm from '../../components/googleSheets';
 import {
   addMetaFactsExpectationCard,
+  addMetaFactsFiles,
   getMetaFactsValidationData,
+  setMetaFactsUploadButton,
 } from '../../actions/metafactsValidly';
 const { Panel } = Collapse;
 function Validly({ mode = 'datasets' }) {
@@ -25,12 +27,17 @@ function Validly({ mode = 'datasets' }) {
   );
   const customRequest = () => {
     if (mode === 'metafacts') {
-      dispatch(getMetaFactsValidationData(files, 'sheet'));
+      dispatch(getMetaFactsValidationData(files));
       return;
     }
-    dispatch(getValidationData(files, 'sheet'));
+    dispatch(getValidationData(files));
   };
   const handleUpload = (file, fileList) => {
+    if (mode === 'metafacts') {
+      dispatch(addMetaFactsFiles(fileList));
+      dispatch(setMetaFactsUploadButton(true));
+      return false;
+    }
     dispatch(addFiles(fileList));
     dispatch(setUploadButton(true));
     return false;
