@@ -2,6 +2,7 @@ import { ADD_FILES, RESET_PANEL_FLAG, SET_LOADING } from '../constants/validly';
 import { ADD_VALIDATIONS, UPLOADED_FILES_VALIDITY } from '../constants/validly';
 import { ADD_EXPECTATIONS } from '../constants/validly';
 import { SET_UPLOAD_BUTTON } from '../constants/validly';
+import { getFormData } from '../utils/form';
 export const addFiles = (data) => ({
   type: ADD_FILES,
   payload: data,
@@ -12,40 +13,15 @@ export const getValidationData = (files) => {
     let data = new FormData();
     files.map((file) => data.append('datasets', file));
     data.append('result_type', 'COMPLETE');
-    fetch(window.REACT_APP_VALIDLY_SERVER_URL + '/expectation/datasets/?format=json', {
+    fetch(window.REACT_APP_VALIDLY_SERVER_URL + `/expectation/datasets/?format=json`, {
       method: 'POST',
       body: data,
     })
       .then((response) => response.json())
       .then((validationData) => {
-        let validationDataArray = [];
-        Object.keys(validationData).map((filename) => {
-          let expectationsValidatedList = [];
-          let is_data_completely_valid;
-          Object.keys(validationData[filename]).map((Expectation, index, array) => {
-            if (
-              validationData[filename][Expectation]['success'] === false &&
-              is_data_completely_valid === undefined
-            ) {
-              is_data_completely_valid = false;
-            }
-            if (is_data_completely_valid === undefined && array.length - 1 === index) {
-              is_data_completely_valid = true;
-            }
-            expectationsValidatedList.push({
-              Expectation_name: Expectation,
-              ...validationData[filename][Expectation],
-            });
-          });
-          validationDataArray.push({
-            filename: filename,
-            is_datacompletely_valid: is_data_completely_valid,
-            expectations_Validated_List: expectationsValidatedList,
-          });
-        });
-        const areUploadedfilesCompletelyValid = validationDataArray.reduce(
-          (totalBool, currentFile) => currentFile.is_datacompletely_valid && totalBool,
-          true,
+        const validationDataArray = getValidationDataArray(validationData);
+        const areUploadedfilesCompletelyValid = validationDataArray.every(
+          (file) => file.is_datacompletely_valid,
         );
         dispatch(setFilesValidity(areUploadedfilesCompletelyValid));
         dispatch(setUploadButton(false));
@@ -55,6 +31,32 @@ export const getValidationData = (files) => {
       .finally(() => dispatch(setLoading(false)));
   };
 };
+export const getExpectationsValidatedList = (validationData) => {
+  const expectationsValidatedList = [];
+  Object.keys(validationData).map((Expectation) => {
+    expectationsValidatedList.push({
+      Expectation_name: Expectation,
+      ...validationData[Expectation],
+    });
+  });
+  return expectationsValidatedList;
+};
+export const getValidationDataArray = (validationData) => {
+  const validationDataArray = [];
+  Object.keys(validationData).map((filename) => {
+    const expectationsValidatedList = getExpectationsValidatedList(validationData[filename]);
+    const is_datacompletely_valid = expectationsValidatedList.every(
+      (expectation) => expectation.success,
+    );
+    validationDataArray.push({
+      filename: filename,
+      is_datacompletely_valid,
+      expectations_Validated_List: expectationsValidatedList,
+    });
+  });
+  return validationDataArray;
+};
+
 export const addValidationData = (data) => ({
   type: ADD_VALIDATIONS,
   payload: data,

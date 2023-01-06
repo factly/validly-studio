@@ -8,7 +8,13 @@ import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
 import proSettings from '../../config/layout';
 
 const { Sider } = Layout;
-
+const routesObj = {
+  '/factly': '0',
+  '/expectation': '0',
+  '/meta-data': '1',
+  '/validly-metafacts': '2',
+  '/docs': '3',
+};
 function Sidebar() {
   const navTheme = proSettings.navTheme;
   const dispatch = useDispatch();
@@ -18,15 +24,12 @@ function Sidebar() {
     return state.validly;
   });
   const selectedmenu = () => {
-    if (['.factly', 'expectation'].includes(pathSnippets[0]) || pathSnippets.length === 0) {
+    const location = useLocation();
+    const pathSnippets = location.pathname.split('/').filter((i) => i);
+    if (pathSnippets.length === 0) {
       return ['0'];
     }
-    if (['meta-data'].includes(pathSnippets[0])) {
-      return ['1'];
-    }
-    if (['docs'].includes(pathSnippets[0])) {
-      return ['2'];
-    }
+    return [routesObj['/' + pathSnippets[0]]] || [];
   };
   const { collapsed } = useSelector((state) => state.sidebar.sider);
   const onCollapse = (collapsed) => {
