@@ -2,10 +2,7 @@ import { UploadOutlined, CheckSquareTwoTone, StopTwoTone } from '@ant-design/ico
 import {
   addExpectationCard,
   addFiles,
-  addValidationData,
   getValidationData,
-  resetPanelFlag,
-  setLoading,
   setUploadButton,
 } from '../../actions/validly';
 import React, { useEffect, useState, useCallback } from 'react';
@@ -15,27 +12,49 @@ import customExpandIcon from '../../components/customexpandicon';
 import ExpectationCard from '../../components/expectationcard';
 import { Space } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
+import GoogleSheetsForm from '../../components/googleSheets';
+import {
+  addMetaFactsExpectationCard,
+  getMetaFactsValidationData,
+} from '../../actions/metafactsValidly';
 const { Panel } = Collapse;
-function Validly() {
+function Validly({ mode = 'datasets' }) {
   const dispatch = useDispatch();
-  const { validations, expectations, files, uploadButton, resetPanelsFlag, loading } = useSelector(
-    (state) => state.validly,
+  const { validations, expectations, files, uploadButton, loading } = useSelector((state) =>
+    mode === 'datasets' ? state.validly : state.metafactsValidly,
   );
   const customRequest = () => {
-    dispatch(getValidationData(files));
+    if (mode === 'metafacts') {
+      dispatch(getMetaFactsValidationData(files, 'sheet'));
+      return;
+    }
+    dispatch(getValidationData(files, 'sheet'));
+  };
+  const handleUpload = (file, fileList) => {
+    dispatch(addFiles(fileList));
+    dispatch(setUploadButton(true));
+    return false;
+  };
+  const updateExpectationsArray = (expectations, expectation, index) => {
+    expectations[index] = expectation;
+    return expectations;
+  };
+  const displayExpectation = (expectation, index) => {
+    if (expectation.success) {
+      return;
+    }
+    if ((mode = 'metafacts')) {
+      dispatch(
+        addMetaFactsExpectationCard(updateExpectationsArray(expectations, expectation, index)),
+      );
+      return;
+    }
+    dispatch(addExpectationCard(updateExpectationsArray(expectations, expectation, index)));
   };
   return (
     <div className="App">
       <Space size={'small'}>
-        <Upload
-          showUploadList={false}
-          beforeUpload={(file, fileList) => {
-            dispatch(addFiles(fileList));
-            dispatch(setUploadButton(true));
-            return false;
-          }}
-          multiple
-        >
+        <Upload showUploadList={false} beforeUpload={handleUpload} multiple>
           <Button icon={<UploadOutlined />}>Select Files</Button>
           <Button>
             {' '}
@@ -48,6 +67,7 @@ function Validly() {
           {' '}
           Start Upload{' '}
         </Button>
+        {mode === 'metafacts' ? <GoogleSheetsForm /> : null}
       </Space>
       {loading ? (
         <Spin size="default" style={{ display: 'block', marginTop: '15%' }} />
@@ -78,16 +98,7 @@ function Validly() {
                             ? { backgroundColor: '#effaf5', margin: '4px' }
                             : { backgroundColor: '#feecf0', margin: '4px' }
                         }
-                        onClick={() => {
-                          if (expectation.success) {
-                            return;
-                          }
-                          let copy_expectationCardArray = [...expectations].filter(
-                            (item, Expectationindex) => Expectationindex !== index,
-                          );
-                          copy_expectationCardArray.splice(index, 0, expectation);
-                          dispatch(addExpectationCard(copy_expectationCardArray));
-                        }}
+                        onClick={() => displayExpectation(expectation, index)}
                       >
                         {expectation.success ? (
                           <CheckSquareTwoTone
