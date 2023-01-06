@@ -51,7 +51,12 @@ export const getMetaTableDataFromS3 = (data) => {
     })
       .then(parseJSON)
       .then(({ status, ok, json: metaTabledata }) => {
-        if (!ok) throw { detail: metaTabledata.detail, status };
+        if (!ok) {
+          const error = new Error();
+          error.detail = metaTabledata.detail;
+          error.status = status;
+          throw error;
+        }
         dispatch(addMetaTableData(metaTabledata));
       })
       .finally(() => dispatch(setLoading(false)));

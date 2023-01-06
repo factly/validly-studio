@@ -25,7 +25,7 @@ export const getMetaFactsValidationData = (files) => {
         );
         dispatch(setFilesValidity(areUploadedfilesCompletelyValid));
         dispatch(setUploadButton(false));
-        dispatch(addExpectationCard(new Array(files.length).fill(null)));
+        dispatch(addMetaFactsExpectationCard(new Array(files.length).fill(null)));
         dispatch(addValidationData(validationDataArray));
       })
       .finally(() => dispatch(setLoading(false)));

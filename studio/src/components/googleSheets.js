@@ -4,7 +4,6 @@ import React from 'react';
 import { useState } from 'react';
 import { Form, Button, Input, Modal } from 'antd';
 import { useDispatch } from 'react-redux';
-import { getMetaTableDataFromS3 } from '../actions/metafacts';
 import { CloudUploadOutlined } from '@ant-design/icons';
 import { getGoogleSheetsValidations } from '../actions/metafactsValidly';
 // import { setFormErrors } from '../utils/form';
@@ -27,7 +26,6 @@ function GoogleSheetsForm({ style, ...props }) {
     //   .catch((error) => {
     //     setFormErrors(error, form);
     //   });
-   
   };
   return (
     <>

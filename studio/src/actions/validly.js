@@ -2,7 +2,6 @@ import { ADD_FILES, RESET_PANEL_FLAG, SET_LOADING } from '../constants/validly';
 import { ADD_VALIDATIONS, UPLOADED_FILES_VALIDITY } from '../constants/validly';
 import { ADD_EXPECTATIONS } from '../constants/validly';
 import { SET_UPLOAD_BUTTON } from '../constants/validly';
-import { getFormData } from '../utils/form';
 export const addFiles = (data) => ({
   type: ADD_FILES,
   payload: data,
@@ -33,7 +32,7 @@ export const getValidationData = (files) => {
 };
 export const getExpectationsValidatedList = (validationData) => {
   const expectationsValidatedList = [];
-  Object.keys(validationData).map((Expectation) => {
+  Object.keys(validationData).forEach((Expectation) => {
     expectationsValidatedList.push({
       Expectation_name: Expectation,
       ...validationData[Expectation],
@@ -43,7 +42,7 @@ export const getExpectationsValidatedList = (validationData) => {
 };
 export const getValidationDataArray = (validationData) => {
   const validationDataArray = [];
-  Object.keys(validationData).map((filename) => {
+  Object.keys(validationData).forEach((filename) => {
     const expectationsValidatedList = getExpectationsValidatedList(validationData[filename]);
     const is_datacompletely_valid = expectationsValidatedList.every(
       (expectation) => expectation.success,

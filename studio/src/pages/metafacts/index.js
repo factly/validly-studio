@@ -87,7 +87,7 @@ function Metafacts() {
     ) {
       dispatch(getMetaTableData(validlyDatasets));
     }
-  }, [validlyDatasets]);
+  }, [validlyDatasets, dispatch, metafactsDatasets.length]);
   return (
     <>
       <Space size={'small'}>

@@ -20,12 +20,7 @@ function Sidebar() {
   const dispatch = useDispatch();
   const location = useLocation();
   const pathSnippets = location.pathname.split('/').filter((i) => i);
-  const { files } = useSelector((state) => {
-    return state.validly;
-  });
   const selectedmenu = () => {
-    const location = useLocation();
-    const pathSnippets = location.pathname.split('/').filter((i) => i);
     if (pathSnippets.length === 0) {
       return ['0'];
     }

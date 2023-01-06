@@ -5,7 +5,7 @@ import {
   getValidationData,
   setUploadButton,
 } from '../../actions/validly';
-import React, { useEffect, useState, useCallback } from 'react';
+import React from 'react';
 import 'antd/dist/antd.css';
 import { Upload, Button, Collapse, Card, Row, Col, Spin } from 'antd';
 import customExpandIcon from '../../components/customexpandicon';
