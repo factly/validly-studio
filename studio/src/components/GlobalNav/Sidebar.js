@@ -8,26 +8,23 @@ import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
 import proSettings from '../../config/layout';
 
 const { Sider } = Layout;
-
+const routesObj = {
+  '/factly': '0',
+  '/expectation': '0',
+  '/meta-data': '1',
+  '/validly-metafacts': '2',
+  '/docs': '3',
+};
 function Sidebar() {
   const navTheme = proSettings.navTheme;
   const dispatch = useDispatch();
   const location = useLocation();
   const pathSnippets = location.pathname.split('/').filter((i) => i);
-  const { files } = useSelector((state) => {
-    return state.validly;
-  });
   const selectedmenu = () => {
-    if (['.factly', 'expectation'].includes(pathSnippets[0]) || pathSnippets.length === 0) {
+    if (pathSnippets.length === 0) {
       return ['0'];
     }
-    if (['meta-data'].includes(pathSnippets[0])) {
-      return ['1'];
-    }
-    if (['docs'].includes(pathSnippets[0])) {
-      if (files.length !== 0) return ['2'];
-      return ['1'];
-    }
+    return [routesObj['/' + pathSnippets[0]]] || [];
   };
   const { collapsed } = useSelector((state) => state.sidebar.sider);
   const onCollapse = (collapsed) => {
@@ -85,9 +82,9 @@ function Sidebar() {
       >
         {routes
           .filter((each) => {
-            if (each.title === 'Metafacts') {
-              return each.enableNavigation === true && files.length !== 0;
-            }
+            // if (each.title === 'Metafacts') {
+            //   return each.enableNavigation === true && files.length !== 0;
+            // }
             return each.enableNavigation === true;
           })
           .map((route, index) => {

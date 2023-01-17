@@ -1,10 +1,11 @@
 import { FileDoneOutlined, TableOutlined, ProfileOutlined } from '@ant-design/icons';
-
 //Pages
 
 import Validly from '../pages/validly';
 import Metafacts from '../pages/metafacts';
 import Documentation from '../pages/docs';
+import ValidlyMetafacts from '../pages/validly-metafacts';
+
 export default [
   {
     path: '/',
@@ -26,6 +27,14 @@ export default [
     enableBreadcrumb: true,
     Icon: TableOutlined,
     title: 'Metafacts',
+  },
+  {
+    path: '/validly-metafacts',
+    Component: ValidlyMetafacts,
+    enableNavigation: true,
+    enableBreadcrumb: true,
+    Icon: FileDoneOutlined,
+    title: 'Validly-Metafacts',
   },
   {
     path: '/docs',

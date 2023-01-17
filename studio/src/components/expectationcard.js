@@ -1,12 +1,12 @@
 import React from 'react';
 import { Modal, Tag, Table, Button } from 'antd';
 import { Card } from 'antd';
-import { InfoCircleFilled, DownloadOutlined } from '@ant-design/icons';
-import { Typography, Space } from 'antd';
+import { DownloadOutlined } from '@ant-design/icons';
+import { Typography } from 'antd';
 import { CSVLink } from 'react-csv';
-const { Text, Link } = Typography;
+const { Link } = Typography;
 function ExpectationCard(Expectation) {
-  const { Expectation_name, success } = Expectation;
+  const { Expectation_name } = Expectation;
   const [show, setShow] = React.useState(false);
   const isResultNested = () => {
     if (Expectation.results) {
@@ -87,12 +87,11 @@ function ExpectationCard(Expectation) {
       </p>
       <p>
         <span>
-          {getPartial_unexepected_list().map((value, index) => {
-            if (index > 5) {
-              return;
-            }
-            return <Tag color="warning"> {value} </Tag>;
-          })}
+          {getPartial_unexepected_list()
+            .slice(0, 5)
+            .map((value) => (
+              <Tag color="warning"> {value} </Tag>
+            ))}
         </span>
         {isMoreHidden && <Link onClick={() => setShow(true)}>...more</Link>}
       </p>
