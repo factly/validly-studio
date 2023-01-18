@@ -50,7 +50,7 @@ function Validly({ mode = 'datasets' }) {
     if (expectation.success) {
       return;
     }
-    if ((mode = 'metafacts')) {
+    if (mode === 'metafacts') {
       dispatch(
         addMetaFactsExpectationCard(updateExpectationsArray(expectations, expectation, index)),
       );
