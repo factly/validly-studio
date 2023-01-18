@@ -44,7 +44,10 @@ export const getGoogleSheetsValidations = (data) => {
       body: raw,
       redirect: 'follow',
     };
-    return fetch('http://localhost:8000/expectations/metadata/gsheet', requestOptions)
+    return fetch(
+      window.REACT_APP_VALIDLY_SERVER_URL + `/expectations/metadata/gsheet`,
+      requestOptions,
+    )
       .then((response) => response.json())
       .then((validationData) => {
         const validationDataArray = getValidationDataArray(validationData);
