@@ -97,30 +97,38 @@ function Validly({ mode = 'datasets' }) {
               <Row gutter={16}>
                 <Col span={8}>
                   <Card bodyStyle={{ padding: '6px' }}>
-                    {file.expectations_Validated_List.map((expectation) => (
-                      <Card
-                        hoverable
-                        style={
-                          expectation.success
-                            ? { backgroundColor: '#effaf5', margin: '4px' }
-                            : { backgroundColor: '#feecf0', margin: '4px' }
-                        }
-                        onClick={() => displayExpectation(expectation, index)}
-                      >
-                        {expectation.success ? (
-                          <CheckSquareTwoTone
-                            style={{ fontSize: '125%', fontWeight: 'bold', paddingRight: '4px' }}
-                            twoToneColor="#48C78E"
-                          />
-                        ) : (
-                          <StopTwoTone
-                            style={{ fontSize: '125%', fontWeight: 'bolder', paddingRight: '4px' }}
-                            twoToneColor="#F14668"
-                          />
-                        )}
-                        <b> {expectation.Expectation_name.replaceAll('_', ' ')} </b>
-                      </Card>
-                    ))}
+                    {file.expectations_Validated_List
+                      .sort((a, b) => {
+                        return a.success === b.success ? 0 : a.success ? 1 : -1;
+                      })
+                      .map((expectation) => (
+                        <Card
+                          hoverable
+                          style={
+                            expectation.success
+                              ? { backgroundColor: '#effaf5', margin: '4px' }
+                              : { backgroundColor: '#feecf0', margin: '4px' }
+                          }
+                          onClick={() => displayExpectation(expectation, index)}
+                        >
+                          {expectation.success ? (
+                            <CheckSquareTwoTone
+                              style={{ fontSize: '125%', fontWeight: 'bold', paddingRight: '4px' }}
+                              twoToneColor="#48C78E"
+                            />
+                          ) : (
+                            <StopTwoTone
+                              style={{
+                                fontSize: '125%',
+                                fontWeight: 'bolder',
+                                paddingRight: '4px',
+                              }}
+                              twoToneColor="#F14668"
+                            />
+                          )}
+                          <b> {expectation.Expectation_name.replaceAll('_', ' ')} </b>
+                        </Card>
+                      ))}
                   </Card>
                 </Col>
                 <Col span={16}>
