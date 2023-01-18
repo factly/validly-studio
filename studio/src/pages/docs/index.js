@@ -6,7 +6,13 @@ const Documentation = () => {
   const [docs, setDocs] = useState({});
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    fetch(window.REACT_APP_VALIDLY_SERVER_URL + '/docs/expectations')
+    let myHeaders = new Headers();
+    myHeaders.append('Content-Type', 'application/json');
+    let requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
+    };
+    fetch(window.REACT_APP_VALIDLY_SERVER_URL + '/docs/expectations/', requestOptions)
       .then((response) => response.json())
       .then((response) => {
         setDocs(response);
