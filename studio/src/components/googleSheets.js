@@ -64,7 +64,7 @@ function GoogleSheetsForm({ style, ...props }) {
             <Input />
           </Form.Item>
 
-          <Form.Item label="Path/Prefix" name="worksheet">
+          <Form.Item label="Work Sheet Name" name="worksheet">
             <Input />
           </Form.Item>
           <Form.Item

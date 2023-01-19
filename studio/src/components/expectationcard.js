@@ -58,7 +58,7 @@ function ExpectationCard(Expectation) {
         title: key === '1' ? 'Row' : key,
         dataIndex: key,
         key: key,
-        width: 20 + (key === '1' ? 3 : key.length === 100 ? 80 : key.length),
+        width: 200,
       };
     });
     return unexpectedColumns;
