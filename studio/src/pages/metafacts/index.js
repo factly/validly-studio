@@ -26,41 +26,41 @@ function Metafacts() {
   };
   const columns = [
     {
-      title: 'formats_available',
-      dataIndex: 'formats_available',
-      key: 'formats_available',
+        "title": "output_file_name",
+        "dataIndex": "output_file_name",
+        "key": "output_file_name"
     },
     {
-      title: 'granularity',
-      dataIndex: 'granularity',
-      key: 'granularity',
+        "title": "units",
+        "dataIndex": "units",
+        "key": "units"
     },
     {
-      title: 'is_public',
-      dataIndex: 'is_public',
-      key: 'is_public',
+        "title": "temporal_coverage",
+        "dataIndex": "temporal_coverage",
+        "key": "temporal_coverage"
     },
     {
-      title: 'output_file_name',
-      dataIndex: 'output_file_name',
-      key: 'output_file_name',
+        "title": "granularity",
+        "dataIndex": "granularity",
+        "key": "granularity"
     },
     {
-      title: 'spatial_coverage',
-      dataIndex: 'spatial_coverage',
-      key: 'spatial_coverage',
+        "title": "spatial_coverage",
+        "dataIndex": "spatial_coverage",
+        "key": "spatial_coverage"
     },
     {
-      title: 'temporal_coverage',
-      dataIndex: 'temporal_coverage',
-      key: 'temporal_coverage',
+        "title": "formats_available",
+        "dataIndex": "formats_available",
+        "key": "formats_available"
     },
     {
-      title: 'units',
-      dataIndex: 'units',
-      key: 'units',
-    },
-  ];
+        "title": "is_public",
+        "dataIndex": "is_public",
+        "key": "is_public"
+    }
+]
   // const columnsDynamic = Object.entries(metaTabledata).map((filenameValuePair, index) => {
   //   const columns = Object.entries(filenameValuePair[1]).map((columnValuePair, index) => {
   //     return {
