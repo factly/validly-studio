@@ -84,7 +84,7 @@ function Validly({ mode = 'datasets' }) {
           {' '}
           Start Upload{' '}
         </Button>
-        {mode === 'metafacts' ? <GoogleSheetsForm /> : null}
+        {mode === 'metafacts' ? <GoogleSheetsForm loading={loading}/> : null}
       </Space>
       {loading ? (
         <Spin size="default" style={{ display: 'block', marginTop: '15%' }} />

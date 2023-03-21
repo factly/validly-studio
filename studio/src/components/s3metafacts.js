@@ -8,7 +8,7 @@ import { getMetaTableDataFromS3 } from '../actions/metafacts';
 import { CloudUploadOutlined } from '@ant-design/icons';
 import { setFormErrors } from '../utils/form';
 
-function S3metafactsForm({ style, ...props }) {
+function S3metafactsForm({ loading , style, ...props }) {
   const dispatch = useDispatch();
   const [form] = Form.useForm();
   const [showModal, setShowModal] = useState(false);
@@ -73,7 +73,7 @@ function S3metafactsForm({ style, ...props }) {
               span: 16,
             }}
           >
-            <Button type="primary" htmlType="submit">
+            <Button type="primary" loading={loading} htmlType="submit">
               Submit
             </Button>
           </Form.Item>
