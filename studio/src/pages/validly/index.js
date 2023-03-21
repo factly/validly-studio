@@ -143,7 +143,7 @@ function Validly({ mode = 'datasets' }) {
                 </Col>
                 <Col span={16}>
                   {expectations[index] ? (
-                    <ExpectationCard {...expectations[index]}></ExpectationCard>
+                    <ExpectationCard Expectation={{...expectations[index]}} fileName={file.filename.split('/').pop().split('.')[0]} ></ExpectationCard>
                   ) : null}
                 </Col>
               </Row>
