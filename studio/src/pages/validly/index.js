@@ -7,7 +7,7 @@ import {
 } from '../../actions/validly';
 import React from 'react';
 import 'antd/dist/antd.css';
-import { Upload, Button, Collapse, Card, Row, Col, Spin } from 'antd';
+import { Upload, Button, Collapse, Card, Row, Col, Spin, Radio, Form } from 'antd';
 import customExpandIcon from '../../components/customexpandicon';
 import ExpectationCard from '../../components/expectationcard';
 import { Space } from 'antd';
@@ -19,6 +19,7 @@ import {
   getMetaFactsValidationData,
   setMetaFactsUploadButton,
 } from '../../actions/metafactsValidly';
+import useUploadForm from '../../components/upload';
 const { Panel } = Collapse;
 function Validly({ mode = 'datasets' }) {
   const dispatch = useDispatch();
@@ -58,10 +59,19 @@ function Validly({ mode = 'datasets' }) {
     }
     dispatch(addExpectationCard(updateExpectationsArray(expectations, expectation, index)));
   };
+  const [UploadForm, isDirectory] = useUploadForm();
+  const uploadProps = {
+    showUploadList: false,
+    beforeUpload: handleUpload,
+    multiple: true,
+    accept : "text/csv",
+    ...(isDirectory ? { directory: true } : {}),
+  };
   return (
     <div className="App">
+      <UploadForm></UploadForm>
       <Space size={'small'}>
-        <Upload showUploadList={false} beforeUpload={handleUpload} multiple>
+        <Upload {...uploadProps}>
           <Button icon={<UploadOutlined />}>Select Files</Button>
           <Button>
             {' '}

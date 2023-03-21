@@ -6,6 +6,7 @@ import { CSVLink } from 'react-csv';
 import { useHistory } from 'react-router-dom';
 import { addFiles, getMetaTableData, setUploadButton } from '../../actions/metafacts';
 import S3metafactsForm from '../../components/s3metafacts';
+import useUploadForm from '../../components/upload';
 function Metafacts() {
   const dispatch = useDispatch();
   const history = useHistory();
@@ -88,17 +89,25 @@ function Metafacts() {
       dispatch(getMetaTableData(validlyDatasets));
     }
   }, [validlyDatasets, dispatch, metafactsDatasets.length]);
+  
+  const [UploadForm, isDirectory] = useUploadForm();
+  const uploadProps = {
+    showUploadList: false,
+    ...(isDirectory ? { directory: true } : {}),
+    accept: "text/csv",
+    beforeUpload: (file, fileList) => {
+      dispatch(addFiles(fileList));
+      dispatch(setUploadButton(true));
+      return false;
+    },
+    multiple: true,
+  };
   return (
     <>
+    <UploadForm></UploadForm>
       <Space size={'small'}>
         <Upload
-          showUploadList={false}
-          beforeUpload={(file, fileList) => {
-            dispatch(addFiles(fileList));
-            dispatch(setUploadButton(true));
-            return false;
-          }}
-          multiple
+          {...uploadProps}
         >
           <Button icon={<UploadOutlined />}>Select Local Files</Button>
           <Button>
