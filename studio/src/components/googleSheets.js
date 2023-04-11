@@ -8,7 +8,7 @@ import { CloudUploadOutlined } from '@ant-design/icons';
 import { getGoogleSheetsValidations } from '../actions/metafactsValidly';
 // import { setFormErrors } from '../utils/form';
 
-function GoogleSheetsForm({ style, ...props }) {
+function GoogleSheetsForm({  loading , style, ...props }) {
   const dispatch = useDispatch();
   const [form] = Form.useForm();
   const [showModal, setShowModal] = useState(false);
@@ -73,7 +73,7 @@ function GoogleSheetsForm({ style, ...props }) {
               span: 16,
             }}
           >
-            <Button type="primary" htmlType="submit">
+            <Button type="primary" loading={loading} htmlType="submit">
               Submit
             </Button>
           </Form.Item>

@@ -5,7 +5,7 @@ import { DownloadOutlined } from '@ant-design/icons';
 import { Typography } from 'antd';
 import { CSVLink } from 'react-csv';
 const { Link } = Typography;
-function ExpectationCard(Expectation) {
+function ExpectationCard({ Expectation , fileName }) {
   const { Expectation_name } = Expectation;
   const [show, setShow] = React.useState(false);
   const isResultNested = () => {
@@ -144,6 +144,7 @@ function ExpectationCard(Expectation) {
                 hideOnSinglePage: true,
               }}
               scroll={{ x: 1000, y: 500 }}
+              title={() => <b>{fileName}</b>}
             />
           </>
         ) : (
