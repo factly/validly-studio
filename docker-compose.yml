@@ -306,7 +306,7 @@ services:
       - minio
     ports:
       - 8000:8000
-    image: factly/validly-server:0.4.2
+    image: factly/validly-server:0.4.5s-stag-v1
     command: >
       /bin/sh -c "
       uvicorn app.main:app --reload --host 0.0.0.0;
