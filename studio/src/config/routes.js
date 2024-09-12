@@ -5,6 +5,8 @@ import Validly from '../pages/validly';
 import Metafacts from '../pages/metafacts';
 import Documentation from '../pages/docs';
 import ValidlyMetafacts from '../pages/validly-metafacts';
+import Callback from '../pages/redirect';
+
 
 export default [
   {
@@ -43,5 +45,10 @@ export default [
     enableBreadcrumb: true,
     Icon: ProfileOutlined,
     title: 'Documentation',
+  },
+  {
+    path: '/redirect',
+    menuKey: '/redirect',
+    Component: Callback,
   },
 ];
